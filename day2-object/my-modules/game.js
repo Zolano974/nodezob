@@ -1,37 +1,17 @@
 'use strict'
-//abstraction, several implementations
-// import * as readline from 'readline'
 const readline = require('readline')
+const random = require('./random')
 
-const random = {
-  getRand: (max) => {
-    return Math.floor(Math.random() * Math.floor(max))
-    // return 51
-  },
-  getRandom: () => {
-    return Math.random()
-  },
-  getRandomArbitrary: (min, max) => {
-    return Math.random() * (max - min) + min
-  },
-  getRandomInt: (min, max) => {
-    min = Math.ceil(min)
-    max = Math.floor(max)
-    return Math.floor(Math.random() * (max - min)) + min
-  },
-  getRandomIntInclusive: (min, max) => {
-    min = Math.ceil(min)
-    max = Math.floor(max)
-    return Math.floor(Math.random() * (max - min + 1)) + min
-  },
-}
+module.exports = class Game {
+  constructor(params = {min:0, max:10}) {
 
-class Game {
-  constructor(params) {
+    let {min, max} = params
+
     //set random target
-    this.target = random.getRandomIntInclusive(params.min, params.max)
-    this.min = params.in || 0
-    this.max = params.max !== undefined ? params.max : 100 //default value: if not falsy, then we MUST code wit at
+    this.target = random.getIntInclusive(min, max)
+    this.min = min || 0
+    this.max = max !== undefined ? max : 100 //default value: if not falsy, then we MUST code wit a ternary
+
     this.givenAnswers = []
     this.cli = readline.createInterface({
       input: process.stdin,
@@ -45,7 +25,13 @@ class Game {
       this.givenAnswers.length > 0
         ? '(already tried : ' + this.givenAnswers.join(',') + ') \n '
         : ''
-    const questionString = 'Type an INT between '+this.min+' & '+this.max+' : \n ' + areadyTriedPart
+    const questionString =
+      'Type an INT between ' +
+      this.min +
+      ' & ' +
+      this.max +
+      ' : \n ' +
+      areadyTriedPart
 
     //launch play turn
     this.cli.question(questionString, (answer) => {
@@ -53,7 +39,7 @@ class Game {
       //if won : we brak the loop and exit
       if (typedNumber === this.target) {
         console.log(
-          '<--------------------0°o%^%o°0 !!! YOU WIN  !!! 0°o%^%o°0-------------------->'
+          '<--------------------0°o%^%o°0 !!! YOU WIN  !!! 0°o%^%o°0-------------------->',
         )
         this.cli.close()
       }
@@ -71,12 +57,12 @@ class Game {
     if (isNaN(value)) {
       return 'value must be a number !'
     }
-    if(isNaN(target)){
+    if (isNaN(target)) {
       return 'target is not a number ! '
     }
     //cas of out-of-range value
     if (value < this.min || value > this.max) {
-      return 'Value must be in ['+this.min+'-'+this.max+'] interval'
+      return 'Value must be in [' + this.min + '-' + this.max + '] interval'
     }
     //hint on value compared to target
     if (value > target) {
@@ -87,9 +73,3 @@ class Game {
   }
 }
 
-const game = new Game({
-  min: 0,
-  max: 10,
-})
-
-game.play()

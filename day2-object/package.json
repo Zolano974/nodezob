@@ -6,6 +6,6 @@
   },
   "scripts": {
     "build:ts": "tsc",
-    "startgame": "ts-node 05-game-object.ts"
+    "startgame": "ts-node 07-game-index-ts.ts"
   }
 }

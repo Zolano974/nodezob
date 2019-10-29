@@ -1,43 +1,23 @@
 'use strict'
-//abstraction, several implementations
 import * as readline from 'readline'
-// const readline = require('readline')
-
-//random custom library
-const random = {
-  getRandom: () => {
-    return Math.random()
-  },
-  getRandomArbitrary: (min: number, max: number) => {
-    return Math.random() * (max - min) + min
-  },
-  getRandomInt: (min: number, max: number) => {
-    min = Math.ceil(min)
-    max = Math.floor(max)
-    return Math.floor(Math.random() * (max - min)) + min
-  },
-  getRandomIntInclusive: (min: number, max: number) => {
-    min = Math.ceil(min)
-    max = Math.floor(max)
-    return Math.floor(Math.random() * (max - min + 1)) + min
-  },
-}
+import {getRandomInt, getRandomIntInclusive} from './random-ts'
 
 //static check on object input structure
 interface gameParams {
   min: number
   max: number
 }
+
 //main class
-class Game {
+export class Game {
   target: number
   min: number
   max:number
   givenAnswers: number[]
   cli: readline.Interface
   /** constructor */
-  constructor(params: gameParams) {
-    this.target = random.getRandomIntInclusive(params.min, params.max)
+  constructor(params: gameParams = {min:0, max:25}) {
+    this.target = getRandomIntInclusive(params.min, params.max)
     this.min = params.min || 0
     this.max = params.max || 100
     this.givenAnswers = []
@@ -100,10 +80,5 @@ class Game {
   }
 }
 
-//========================== MAIN ==========================//
-const game = new Game({
-  min: 0,
-  max: 50,
-})
 
-game.play()
+
