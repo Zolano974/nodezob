@@ -3,9 +3,8 @@ const readline = require('readline')
 const random = require('./random')
 
 module.exports = class Game {
-  constructor(params = {min:0, max:10}) {
-
-    let {min, max} = params
+  constructor(params = { min: 0, max: 10 }) {
+    let { min, max } = params
 
     //set random target
     this.target = random.getIntInclusive(min, max)
@@ -72,4 +71,3 @@ module.exports = class Game {
     }
   }
 }
-
